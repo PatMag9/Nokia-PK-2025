@@ -18,12 +18,13 @@ class ApplicationTestSuite : public Test
 {
 protected:
     const common::PhoneNumber PHONE_NUMBER{112};
-    const common::BtsId BTS_ID{22};
+    const common::BtsId BTS_ID{1024};
     NiceMock<common::ILoggerMock> loggerMock;
     StrictMock<IBtsPortMock> btsPortMock;
     StrictMock<IUserPortMock> userPortMock;
     StrictMock<ITimerPortMock> timerPortMock;
 
+    Expectation showNotConnected = EXPECT_CALL(userPortMock, showNotConnected());
     Application objectUnderTest{PHONE_NUMBER,
                                 loggerMock,
                                 btsPortMock,
@@ -58,6 +59,7 @@ struct ApplicationConnectingTestSuite : ApplicationNotConnectedTestSuite
 
 TEST_F(ApplicationConnectingTestSuite, shallHandleAttachAccept)
 {
+    EXPECT_CALL(timerPortMock, stopTimer());
     EXPECT_CALL(userPortMock, showConnected());
     objectUnderTest.handleAttachAccept();
 }

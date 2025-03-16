@@ -10,6 +10,10 @@ class ConnectingState : public BaseState
 public:
     ConnectingState(Context& context);
     void handleAttachAccept() override;
+    void handleAttachReject() override;
+
+    // ITimerEventsHandler interface
+    void handleTimeout() override;
 };
 
 }
